@@ -2,11 +2,12 @@ clear all;
 clc;
 load('../Data/Data.mat');
 for i = 1:length(x)
-    e = [x(i) y(i) ts(1)];
-    Events{i,1} = e;
+    Events{i,1} = [x(i) y(i) ts(i)];
 end
-[Velocity, P] = Algorithm1(Events);
 
+[Parameters] = Algorithm1(Events);
+
+% Plotting code
 X = 1:length(I);
 Y = 1:length(I);
 tmin = min(ts);
