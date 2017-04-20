@@ -1,16 +1,16 @@
-function [parameters] = Algorithm1(Events)
+function [slope_x, slope_y, parameters] = Algorithm1(Events)
 
 % Setting Neighborhood parameters as described in paper
-L = 11;
-deltaT = 150;
+L = 17;
+deltaT = 1000;
 thresh1 = 1e-5;
 thresh2 = 5e-2;
 %     Create empty neighborhood
 Neighborhood = cell(length(Events),1);
 
 %     Step 1 and 2
-% for i = 1:length(Events)
-for i = 1:100
+for i = 1:length(Events)
+% for i = 1:5000
     e = Events{i}; k = 1;
     %         This loop collects all points in the neighborhood and stores them
     %         in N_e
@@ -41,7 +41,6 @@ for i = 1:100
             if plane_parameters'*[N_e{j,1} 1]' > thresh2
                 N_e{j,1} = [];
                 
-            else 
             end
         end
         N_e = N_e(find(~cellfun(@isempty, N_e)> 0));
@@ -52,18 +51,29 @@ for i = 1:100
     end
     Neighborhood{i} = N_e;
     parameters{i} = P1;
+    
+    %   Calculate Velocity
+   
+%     Choosing a Random Point in neighborhood with differnt coordinates (so that we dont get NaN)
+    for l =1:length(N_e)
+        second = cell2mat(N_e(l));
+        if(second(1) ~= e(1) && second(2) ~= e(2) && second(3) ~= e(3))
+            break;
+            
+        end
+    end
+    
+% %   Calculating Slopes: dx/dt, dy/dt
+    diff_x = e(1) - second(1);
+    diff_y = e(2) - second(2);
+    diff_t = e(3) - second(3);
+    slope_x(i) = diff_x/diff_t;
+    slope_x(i) = 1/slope_x(i);
+    slope_y(i) = diff_y/diff_t;
+    slope_y(i) = 1/slope_y(i);
 end
 
-%   Calculate Velocity ..(Yet To Complete)
 
-for i = 1:length(parameters)
-    
-    pixel1 = 
-    
-    
-    
-    
-    
-end
+
 
 end
